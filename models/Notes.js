@@ -11,4 +11,4 @@ var NotesSchema = new Schema( {
 
 var Notes = ( "Notes", NotesSchema );
 
-module.export = Notes;
+module.exports = Notes;

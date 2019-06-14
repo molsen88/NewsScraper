@@ -28,6 +28,8 @@ var app = express();
 
 // mongoose.connect( MONGODB_URI );
 
+// app.get("/")
+
 // app.get( "/", function ( req, res ) {
 axios.get( "https://www.liverpoolecho.co.uk/all-about/liverpool-fc" ).then( function ( response ) {
     var $ = cheerio.load( response.data );
@@ -38,13 +40,13 @@ axios.get( "https://www.liverpoolecho.co.uk/all-about/liverpool-fc" ).then( func
 
         var title = $( element ).children( "a.headline" ).text();
 
-        // var summary = $( element ).children( "a.headline" ).text()
+        var summary = $( element ).children( "a.description" ).text()
 
         var link = $( element ).find( "a.headline" ).attr( "href" );
 
         results.push( {
             title: title,
-            // summary: summary,
+            summary: summary,
             link: link
         } )
         console.log( results )
@@ -58,6 +60,7 @@ axios.get( "https://www.liverpoolecho.co.uk/all-about/liverpool-fc" ).then( func
     // console.log( results )
     // res.send( "Scrape Complete" )
 } )
+// } )
 // console.log( results )
 
 

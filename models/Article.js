@@ -11,13 +11,26 @@ var ArticleSchema = new Schema( {
         type: String,
         required: true
     },
-    comments: [{
-        type: Schema.Types.ObjectId,
-        ref: "Comment"
-    }]
+    summary: {
+        type: String,
+        ref: true
+    },
+
+    note: {
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: "Note"
+        }],
+        article: String
+    },
+    saved: {
+        type: Boolean,
+        default: false
+    }
 } );
+
 
 var Article = mongoose.model( "Article", ArticleSchema );
 
 
-module.export = Article;
+module.exports = Article;

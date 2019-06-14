@@ -4,9 +4,9 @@ var express = require( "express" )
 var logger = require( "morgan" )
 
 var axios = require( "axios" )
-// var mongoose = require( "mongoose" )
+var mongoose = require( "mongoose" )
 
-// var db = require( "./ models" )
+var db = require( "./models" )
 
 var PORT = 3000;
 
@@ -14,34 +14,34 @@ var app = express();
 
 
 // Use morgan logger for logging requests
-// app.use( logger( "dev" ) );
+app.use( logger( "dev" ) );
 // Parse request body as JSON
-// app.use( express.urlencoded( { extended: true } ) );
-// app.use( express.json() );
+app.use( express.urlencoded( { extended: true } ) );
+app.use( express.json() );
 // Make public a static folder
-// app.use( express.static( "public" ) );
+app.use( express.static( "public" ) );
 
 // Connect to the Mongo DB
 // mongoose.connect( "mongodb://localhost:27017/NewsScraper", { useNewUrlParser: true } );
 
-// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/NewsScraper";
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/NewsScraper";
 
-// mongoose.connect( MONGODB_URI );
+mongoose.connect( MONGODB_URI );
 // app.get("/")
 
-var mongojs = require( "mongojs" )
+// var mongojs = require( "mongojs" )
 
-var databaseUrl = "articles";
-var collections = ["scrapedData"];
+// var databaseUrl = "articles";
+// var collections = ["scrapedData"];
 
 // Hook mongojs configuration to the db variable
-var db = mongojs( databaseUrl, collections );
-db.on( "error", function ( error ) {
-    console.log( "Database Error:", error );
-} );
+// var db = mongojs( databaseUrl, collections );
+// db.on( "error", function ( error ) {
+//     console.log( "Database Error:", error );
+// } );
 
 // Main route (simple Hello World Message)
-app.get( "/", function ( req, res ) {
+app.get( "/articles", function ( req, res ) {
     axios.get( "https://www.liverpoolecho.co.uk/all-about/liverpool-fc" ).then( function ( response ) {
         var $ = cheerio.load( response.data );
 
@@ -63,121 +63,24 @@ app.get( "/", function ( req, res ) {
             } )
             return;
 
-
-
-            //     db.Article.create( results ).then( function ( dbArticle ) {
-            //         console.log( dbArticle )
-            //     } ).catch( function ( err ) {
-            //         console.log( err )
-            //     } );
-            // } );
-            // console.log( results )
-            // res.send( "Scrape Complete" )
         } )
         res.send( results )
+
+
+        db.Article.create( results ).then( function ( dbArticle ) {
+            console.log( dbArticle )
+        } ).catch( function ( err ) {
+            console.log( err )
+        } );
     } );
-
-
-
-
-
-
-
-
-
-    // app.get( "/", function ( req, res ) {
-    // axios.get( "https://www.liverpoolecho.co.uk/all-about/liverpool-fc" ).then( function ( response ) {
-    //     var $ = cheerio.load( response.data );
-
-    //     var results = [];
-
-    //     $( ".teaser" ).each( function ( i, element ) {
-
-    //         var title = $( element ).children( "a.headline" ).text();
-
-    //         var summary = $( element ).children( "a.description" ).text()
-
-    //         var link = $( element ).find( "a.headline" ).attr( "href" );
-
-    //         results.push( {
-    //             title: title,
-    //             summary: summary,
-    //             link: link
-    //         } )
-    //         res.send( results )
-
-    // db.Article.create( result ).then( function ( dbArticle ) {
-    //     console.log( dbArticle )
-    // } ).catch( function ( err ) {
-    //     console.log( err )
-    // } );
-
     // console.log( results )
     // res.send( "Scrape Complete" )
 
-    // } )
+} )
 
 
 
 
-
-
-
-    // app.get( "/scrape", function ( req, res ) {
-    //     axios.get( "https://www.liverpoolecho.co.uk/all-about/liverpool-fc" ).then( function ( response ) {
-    //         var $ = cheerio.load( response.data )
-
-    //         $( ".teaser" ).each( function ( i, element ) {
-    //             var result = {};
-
-    //             result.title = $( this )
-    //                 .children( "a.headline" )
-    //                 .text();
-
-    //             result.link = $( this )
-    //                 .chilren( "href" )
-    //                 .text();
-
-    //             db.Article.create( result ).then( function ( dbArticle ) {
-    //                 console.log( dbArticle )
-    //             } )
-    //                 .catch( function ( err ) {
-    //                     console.log( err )
-    //                 } );
-    //         } );
-    //         res.send( "Scrape Complete" )
-    //     } );
-    // } );
-
-    // Route for getting all Articles from the db
-    // app.get( "/articles", function ( req, res ) {
-    // Grab every document in the Articles collection
-    // db.Article.find( {} )
-    // .then( function ( dbArticle ) {
-    // If we were able to successfully find Articles, send them back to the client
-    // res.json( dbArticle );
-    // } )
-    // .catch( function ( err ) {
-    // If an error occurred, send it to the client
-    // res.json( err );
-    // } );
-    // } );
-
-    // app.post( "/all", function ( req, res ) {
-
-    // } )
-
-
-
-
-
-
-
-
-
-
-
-} );
 
 app.listen( PORT, function () {
     console.log( "App running on port " + PORT + "!" );

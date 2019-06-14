@@ -13,7 +13,7 @@ var ArticleSchema = new Schema( {
     },
     summary: {
         type: String,
-        ref: true
+        required: true
     },
 
     note: {

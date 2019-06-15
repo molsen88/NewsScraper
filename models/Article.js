@@ -8,7 +8,7 @@ var ArticleSchema = new Schema( {
         required: true
     },
 
-    lsummary: {
+    summary: {
         type: String,
         required: true
     },

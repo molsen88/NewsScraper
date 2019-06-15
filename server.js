@@ -40,7 +40,7 @@ mongoose.connect( MONGODB_URI );
 //     console.log( "Database Error:", error );
 // } );
 
-// Main route (simple Hello World Message)
+
 app.get( "/articles", function ( req, res ) {
     axios.get( "https://www.liverpoolecho.co.uk/all-about/liverpool-fc" ).then( function ( response ) {
         var $ = cheerio.load( response.data );
@@ -73,8 +73,7 @@ app.get( "/articles", function ( req, res ) {
             console.log( err )
         } );
     } );
-    // console.log( results )
-    // res.send( "Scrape Complete" )
+
 
 } )
 

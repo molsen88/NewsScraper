@@ -7,11 +7,12 @@ var ArticleSchema = new Schema( {
         type: String,
         required: true
     },
-    link: {
+
+    lsummary: {
         type: String,
         required: true
     },
-    summary: {
+    link: {
         type: String,
         required: true
     },
